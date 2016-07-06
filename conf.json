@@ -1,0 +1,9 @@
+{
+    "Port": 8001,
+    "Path": "/teapot",
+    "ResponseFile": "/path/to418.html",
+    
+    "UseSSL": true,
+    "CertPath": "/path/to/fullchain.pem",
+    "KeyPath": "/path/to/privkey.pem"
+}
