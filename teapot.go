@@ -19,15 +19,16 @@ type Config struct {
 }
 
 func main() {
-	fmt.Printf("Teapot.\n")
+	fmt.Println("Teapot.")
 
 	file, _ := os.Open("conf.json")
 	decoder := json.NewDecoder(file)
 	configuration := Config{}
 	err := decoder.Decode(&configuration)
 	if err != nil {
-		fmt.Println("error:", err)
+		log.Println(err)
 	}
+	defer file.Close()
 
 	fmt.Printf(" Serving: %s\n", configuration.ResponseFile)
 
@@ -40,15 +41,15 @@ func main() {
 	})
 
 	if configuration.UseSSL {
-		log.Fatal(http.ListenAndServeTLS(
+		err = http.ListenAndServeTLS(
 			fmt.Sprintf(":%d", configuration.Port),
 			configuration.CertPath,
 			configuration.KeyPath,
-			nil))
+			nil)
 	} else {
-		log.Fatal(http.ListenAndServe(
+		err = http.ListenAndServe(
 			fmt.Sprintf(":%d", configuration.Port),
-			nil))
+			nil)
 	}
-
+	log.Fatal(err)
 }
